@@ -1,0 +1,31 @@
+{
+    "name": "limits",
+    "description": "Sets the limit to upload size and processing time for incoming and outgoing requests.",
+    "author": "Abhinav Raj <abhinavr@yahoo-inc.com>",
+    "version": "0.0.1",
+    "devDependencies": {
+        "ytestrunner": "*",
+        "yuitest": "*",
+        "jshint": "~0.9.0",
+        "istanbul": "~0.1.27"
+    },
+    "main": "./lib/index.js",
+    "scripts": {
+        "pretest": "jshint --config ./node_modules/yui-lint/jshint.json ./lib/",
+        "test": "istanbul cover --print=both --yui ytestrunner -- --include ./tests/options.js --include ./tests/builder.js --include ./tests/parser.js --include ./tests/parser_coffee.js --include ./tests/test-limits.js"
+    },
+    "bugs": { "url" : "http://github.com/yahoo/node-limits/issues" },
+    "licenses":[
+        {
+            "type" : "BSD",
+            "url" : "https://github.com/yahoo/node-limits/blob/master/LICENSE"
+        }
+    ],
+    "repository": {
+        "type":"git",
+        "url":"http://github.com/yahoo/node-limits.git"
+    },
+    "engines": {
+        "node": ">0.8.x"
+    }
+}
