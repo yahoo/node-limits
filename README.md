@@ -53,6 +53,10 @@ app.use(limits(limits_config));
 
 app.listen(8000);
 ```
+Build Status
+------------
+
+[![Build Status](https://secure.travis-ci.org/yahoo/node-limits.png?branch=master)](http://travis-ci.org/yahoo/node-limits)
 
 Node Badge
 ----------
