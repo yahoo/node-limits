@@ -53,3 +53,8 @@ app.use(limits(limits_config));
 
 app.listen(8000);
 ```
+
+Node Badge
+----------
+
+[![NPM](https://nodei.co/npm/limits.png)](https://nodei.co/npm/limits/)
