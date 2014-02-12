@@ -9,7 +9,10 @@ It is responsible for:
   In config, use: { file_uploads: false }
 
 * Limiting the total size of upload
-  In config, use: { post_max_size: [bytes] }
+  In config, use: { post_max_size: [bytes] }, if 0, this functionality is disabled
+  
+* Limiting the length of uri
+  In config, use: { uri_max_length: [number] }, if 0 this functionality is disabled
 
 * Setting a global absolute timeout for both incoming and outgoing connections
   In config, use: { global_timeout: [millis] }, if 0  - no timeout is set
@@ -25,8 +28,12 @@ It is responsible for:
 
 * Setting the http.Agent.defaultMaxSockets for the entire app
   In config, use: { max_sockets: [number] }, if 0  - nothing will be set.
+  
+* Setting the http.Agent.defaultMaxSockets for the entire app
+  In config, use: { socket_no_delay: [boolean] }, if false  - nothing will be set.
 
-To completely disable module use config, { enable: false }
+To completely disable module use config, { enable: false }.
+Each of the above functionality is disabled if corresponding config attribute is not set.
 
 install
 -------
