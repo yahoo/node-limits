@@ -98,7 +98,20 @@ suite.add(new YUITest.TestCase({
         req.listener.call(null, new Buffer(600));
         Assert.areEqual(resp.status, 413);
     },
+    'Verify that limit is disabled with null config' : function() {
+        var testee = mod_limits();
 
+        var req = getReq(),
+            resp = getResp(),
+            next = false;
+
+        testee(req, resp, function() {
+            next = true;
+        });
+        Assert.isNull(req.listener);
+        Assert.isTrue(next);
+    },
+    
     'Verify that we can disable limits' : function() {
         var testee = mod_limits({
             "enable" : "",
@@ -116,7 +129,6 @@ suite.add(new YUITest.TestCase({
         Assert.isNull(req.listener);
         Assert.isTrue(next);
     },
-
     'Verify that limits works with string data' : function() {
         var testee = mod_limits({
             "enable" : "true",
@@ -304,14 +316,12 @@ suite.add(new YUITest.TestCase({
     'Test idle timeout and no delay' : function() {
         var testee = mod_limits({
             "enable" : "true",
-            "idle_timeout" : 0, // will be overwritten by local config
-            "socket_no_delay" : true
+            "idle_timeout" : 0 // will be overwritten by local config
         });
 
         var req = getReq(),
             resp = getResp(),
-            next = false,
-            noDelay = false;
+            next = false;
 
         req.mod_config = {
             idle_timeout : 1
@@ -322,9 +332,6 @@ suite.add(new YUITest.TestCase({
         req.socket = {
             setTimeout : function () {
                 socketCalled = true;
-            },
-            setNoDelay : function() {
-                noDelay = true;
             }
         }
 
@@ -334,9 +341,7 @@ suite.add(new YUITest.TestCase({
 
         Assert.isTrue(next);
         Assert.isTrue(socketCalled);
-        Assert.isTrue(noDelay);
 
-        noDelay = false;
 
         socketCalled = false;
         req.connection = {
@@ -344,22 +349,52 @@ suite.add(new YUITest.TestCase({
                 setTimeout : function () {
                     socketCalled = true;
                 },
-                setNoDelay : function() {
-                    noDelay = true;
-                },
                 pause : function() {
                 }
             }
         };
-
         delete req.socket;
 
         testee(req, resp, function() {
             next = true;
         });
         Assert.isTrue(socketCalled);
-        Assert.isTrue(noDelay);
+    },
+    'Verify that limit works with correct url length' : function() {
+        var testee = mod_limits({
+            "enable" : "true",
+            "uri_max_length" : 1000,
+        });
+
+        var req = getReq(),
+            resp = getResp(),
+            next = false;
+            
+        testee(req, resp, function() {
+            next = true;
+        });
+        Assert.isTrue(next);
+        Assert.isTrue(resp.status !== 413);
+            
+    },
+    'Verify that limit give 413 for over the length url' : function() {
+        var testee = mod_limits({
+            "enable" : "true",
+            "uri_max_length" : "12", //length is 13 in the req object coming from getReq
+        });
+
+        var req = getReq(),
+            resp = getResp(),
+            next = false;
+            
+        testee(req, resp, function() {
+            next = true;
+        });
+        Assert.isTrue(!next);
+        Assert.isTrue(resp.status === 413);
+            
     }
+    
 }));
 
 // vim:ts=4 sw=4 et
