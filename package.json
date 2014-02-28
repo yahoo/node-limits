@@ -6,8 +6,8 @@
     "devDependencies": {
         "ytestrunner": "*",
         "yuitest": "*",
-        "jshint": "*",
-        "istanbul": "*"
+        "jshint": "~0.9.0",
+        "istanbul": "~0.1.27"
     },
     "main": "./lib/index.js",
     "scripts": {
