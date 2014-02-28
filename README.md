@@ -29,7 +29,7 @@ It is responsible for:
 * Setting the http.Agent.defaultMaxSockets for the entire app
   In config, use: { max_sockets: [number] }, if 0  - nothing will be set.
   
-* Setting the http.Agent.defaultMaxSockets for the entire app
+* Setting the socket noDelay
   In config, use: { socket_no_delay: [boolean] }, if false  - nothing will be set.
 
 To completely disable module use config, { enable: false }.

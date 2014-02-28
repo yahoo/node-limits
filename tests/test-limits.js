@@ -316,12 +316,14 @@ suite.add(new YUITest.TestCase({
     'Test idle timeout and no delay' : function() {
         var testee = mod_limits({
             "enable" : "true",
-            "idle_timeout" : 0 // will be overwritten by local config
+            "idle_timeout" : 0, // will be overwritten by local config
+            "socket_no_delay" : true
         });
 
         var req = getReq(),
             resp = getResp(),
-            next = false;
+            next = false,
+            noDelay = false;
 
         req.mod_config = {
             idle_timeout : 1
@@ -332,6 +334,9 @@ suite.add(new YUITest.TestCase({
         req.socket = {
             setTimeout : function () {
                 socketCalled = true;
+            },
+            setNoDelay : function() {
+                noDelay = true;
             }
         }
 
@@ -341,7 +346,9 @@ suite.add(new YUITest.TestCase({
 
         Assert.isTrue(next);
         Assert.isTrue(socketCalled);
+        Assert.isTrue(noDelay);
 
+        noDelay = false;
 
         socketCalled = false;
         req.connection = {
@@ -349,16 +356,21 @@ suite.add(new YUITest.TestCase({
                 setTimeout : function () {
                     socketCalled = true;
                 },
+                setNoDelay : function() {
+                    noDelay = true;
+                },
                 pause : function() {
                 }
             }
         };
+
         delete req.socket;
 
         testee(req, resp, function() {
             next = true;
         });
         Assert.isTrue(socketCalled);
+        Assert.isTrue(noDelay);
     },
     'Verify that limit works with correct url length' : function() {
         var testee = mod_limits({
