@@ -2,12 +2,12 @@
     "name": "limits",
     "description": "Sets the limit to upload size and processing time for incoming and outgoing requests.",
     "author": "Abhinav Raj <abhinavr@yahoo-inc.com>",
-    "version": "0.0.2",
+    "version": "0.0.3",
     "devDependencies": {
         "ytestrunner": "*",
         "yuitest": "*",
-        "jshint": "~0.9.0",
-        "istanbul": "~0.1.27"
+        "jshint": "*",
+        "istanbul": "*"
     },
     "main": "./lib/index.js",
     "scripts": {
