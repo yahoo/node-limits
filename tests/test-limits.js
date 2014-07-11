@@ -21,21 +21,18 @@ var mod_limits = require('../lib/index.js');
 
 function getReq(arr) {
     return {
-        listener : null,
         url : "www.yahoo.com",
         headers : arr ? [["content-type", "text/plain"], ["host", "www.yahoo.com"]]
         :({ "content-type" : "text/plain",
                 "host" : "www.yahoo.com"
             }),
-        on : function(what, listener) {
-            this.listener = listener;
-        },
         method : 'GET',
         agent : {
             addRequest : function() {
             }
         },
-        emit : function() {
+        emit : function(eventName, data) {
+            return true;
         }
     };
 }
@@ -89,13 +86,14 @@ suite.add(new YUITest.TestCase({
             next = true;
         });
 
-        Assert.isNotNull(req.listener);
+        // Emit has been overridden
+        Assert.isUndefined(req.emit.call(null, 'dummy'));
         Assert.isTrue(next);
-
-        req.listener.call(null, new Buffer(500));
+        
+        req.emit.call(null, 'data', new Buffer(500));
         Assert.areEqual(resp.status, 0);
 
-        req.listener.call(null, new Buffer(600));
+        req.emit.call(null, 'data', new Buffer(600));
         Assert.areEqual(resp.status, 413);
     },
     'Verify that limit is disabled with null config' : function() {
@@ -108,7 +106,11 @@ suite.add(new YUITest.TestCase({
         testee(req, resp, function() {
             next = true;
         });
-        Assert.isNull(req.listener);
+
+        // if in fact limit has not been called,
+        // req.emit will not be wrapped and will
+        // return true 
+        Assert.isTrue(req.emit.call(null, 'dummy'));
         Assert.isTrue(next);
     },
     
@@ -126,9 +128,10 @@ suite.add(new YUITest.TestCase({
         testee(req, resp, function() {
             next = true;
         });
-        Assert.isNull(req.listener);
+        Assert.isTrue(req.emit.call(null, 'dummy'));
         Assert.isTrue(next);
     },
+
     'Verify that limits works with string data' : function() {
         var testee = mod_limits({
             "enable" : "true",
@@ -162,7 +165,8 @@ suite.add(new YUITest.TestCase({
         testee(req, resp, function() {
             next = true;
         });
-        Assert.isNotNull(req.listener);
+        
+        Assert.isUndefined(req.emit.call(null, 'dummy'));
         Assert.isTrue(next);
         Assert.areEqual(http.globalAgent.maxSockets, 1000);
         
@@ -172,13 +176,13 @@ suite.add(new YUITest.TestCase({
             longString +="0123456789";
         }
 
-        req.listener.call(null, longString);
+        req.emit.call(null, 'data', longString);
         Assert.areEqual(resp.status, 0);
         for (i=0; i < 60; i++) {
             longString +="0123456789";
         }
 
-        req.listener.call(null, longString);
+        req.emit.call(null, 'data', longString);
         Assert.areEqual(resp.status, 413);
         self.wait();
     },
@@ -214,10 +218,11 @@ suite.add(new YUITest.TestCase({
         testee(req, resp, function() {
             next = true;
         });
-        Assert.isNotNull(req.listener);
+
+        Assert.isUndefined(req.emit.call(null, 'dummy'));
         Assert.isTrue(next);
 
-        req.listener.call(null, "asdlkasdhflkashdfklasdfklh");
+        req.emit.call(null, 'data', "asdlkasdhflkashdfklasdfklh");
         Assert.areEqual(resp.status, 413);
         self.wait();
     },
@@ -406,7 +411,6 @@ suite.add(new YUITest.TestCase({
         Assert.isTrue(resp.status === 413);
             
     }
-    
 }));
 
 // vim:ts=4 sw=4 et
