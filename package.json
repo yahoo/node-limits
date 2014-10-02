@@ -1,8 +1,8 @@
 {
     "name": "limits",
     "description": "Sets the limit to upload size and processing time for incoming and outgoing requests.",
-    "author": "Abhinav Raj <abhinavr@yahoo-inc.com>",
-    "version": "0.0.3",
+    "author": "Vinit Sacheti<vsacheti@yahoo-inc.com>",
+    "version": "0.0.4",
     "devDependencies": {
         "ytestrunner": "*",
         "yuitest": "*",
