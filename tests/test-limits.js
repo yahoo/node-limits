@@ -410,7 +410,35 @@ suite.add(new YUITest.TestCase({
         Assert.isTrue(!next);
         Assert.isTrue(resp.status === 413);
             
+    },
+    'Verify that globalAgent maxSockets is set' : function() {
+        http.globalAgent.maxSockets = 10;
+        var testee = mod_limits({
+            "enable" : "true",
+            "max_sockets" : 0
+        });
+        Assert.areEqual(10, http.globalAgent.maxSockets);
+        
+        testee = mod_limits({
+            "enable" : "true",
+            "max_sockets" : 100
+        });
+        Assert.areEqual(100, http.globalAgent.maxSockets);
+
+        var req = getReq(),
+            resp = getResp(),
+            next = false;
+        
+        req.mod_config = {
+            "max_sockets" : 1000    
+        }
+        testee(req, resp, function() {
+            next = true;
+        });
+        
+        Assert.areEqual(1000, http.globalAgent.maxSockets);
     }
+    
 }));
 
 // vim:ts=4 sw=4 et
