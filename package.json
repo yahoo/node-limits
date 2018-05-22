@@ -2,7 +2,7 @@
     "name": "limits",
     "description": "Sets the limit to upload size and processing time for incoming and outgoing requests.",
     "author": "Vinit Sacheti<vsacheti@yahoo-inc.com>",
-    "version": "0.0.7",
+    "version": "0.1.0",
     "devDependencies": {
         "jshint": "~2.9.5",
         "mocha": "~5.1",
@@ -35,7 +35,7 @@
         "url": "http://github.com/yahoo/node-limits.git"
     },
     "engines": {
-        "node": ">0.8.x"
+        "node": ">4.x"
     },
     "dependencies": {}
 }
