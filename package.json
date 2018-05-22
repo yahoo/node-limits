@@ -19,7 +19,7 @@
     "main": "./lib/index.js",
     "scripts": {
         "pretest": "jshint ./lib/",
-        "test": "nyc mocha --recursive"
+        "test": "nyc mocha test/unit.js test/functional.js"
     },
     "bugs": {
         "url": "http://github.com/yahoo/node-limits/issues"
