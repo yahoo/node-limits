@@ -25,7 +25,7 @@ describe('node-limits functional', function() {
                     }, latency);
                 });
         };
-        self.server = http.createServer(app).listen(kPort);;
+        self.server = http.createServer(app).listen(kPort);
     });
 
     after(function() {
@@ -55,7 +55,7 @@ describe('node-limits functional', function() {
             // Emulate node-limits middleware running on each incoming request
             // where it monkey patches and sets various timeouts for outgoing ClientRquests
             testee(rq, rs, function(err) {
-                if (err) { console.log('Error in node-limits client handler'); }
+                if (err) { assert.ifError(err); }
                 (function handle(rq, rs) {
                     var opts = {
                         hostname: 'localhost',
@@ -80,7 +80,7 @@ describe('node-limits functional', function() {
             });
         }, function(err, reqs) {
             agent.destroy();
-            done();
+            done(err);
         });
     });
 
