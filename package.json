@@ -4,32 +4,38 @@
     "author": "Vinit Sacheti<vsacheti@yahoo-inc.com>",
     "version": "0.0.7",
     "devDependencies": {
-        "ytestrunner": "*",
-        "yuitest": "*",
-        "jshint": "~0.9.0",
-        "istanbul": "~0.1.27"
+        "jshint": "~2.9.5",
+        "mocha": "~5.1",
+        "nyc": "^11.7",
+        "sinon": "^5.0",
+        "async": "^1.5.2"
     },
-    "contributors": [{
-        "name": "Evan Torrie",
-        "email": "evan.torrie@yahoo.com"
-    }],
+    "contributors": [
+        {
+            "name": "Evan Torrie",
+            "email": "evan.torrie@yahoo.com"
+        }
+    ],
     "main": "./lib/index.js",
     "scripts": {
-        "pretest": "jshint --config ./node_modules/yui-lint/jshint.json ./lib/",
-        "test": "istanbul cover --print=both --yui ytestrunner -- --include ./tests/options.js --include ./tests/builder.js --include ./tests/parser.js --include ./tests/parser_coffee.js --include ./tests/test-limits.js"
+        "pretest": "jshint ./lib/",
+        "test": "nyc mocha --recursive"
     },
-    "bugs": { "url" : "http://github.com/yahoo/node-limits/issues" },
-    "licenses":[
+    "bugs": {
+        "url": "http://github.com/yahoo/node-limits/issues"
+    },
+    "licenses": [
         {
-            "type" : "BSD",
-            "url" : "https://github.com/yahoo/node-limits/blob/master/LICENSE"
+            "type": "BSD",
+            "url": "https://github.com/yahoo/node-limits/blob/master/LICENSE"
         }
     ],
     "repository": {
-        "type":"git",
-        "url":"http://github.com/yahoo/node-limits.git"
+        "type": "git",
+        "url": "http://github.com/yahoo/node-limits.git"
     },
     "engines": {
         "node": ">0.8.x"
-    }
+    },
+    "dependencies": {}
 }
